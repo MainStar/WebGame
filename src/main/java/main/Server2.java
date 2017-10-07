@@ -53,11 +53,6 @@ public class Server2 extends Thread {
         }
     }
 
-    public void stopServer(){
-
-        checkSockekt = false;
-    }
-
     public void handleAccept(SelectionKey key) throws IOException {
         ServerSocketChannel sc = (ServerSocketChannel) key.channel();
         Selector sel = Selector.open();
@@ -94,6 +89,6 @@ public class Server2 extends Thread {
     }
 
     public void handleConnect(SelectionKey key){
-        
+
     }
 }
