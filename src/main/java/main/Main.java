@@ -6,6 +6,9 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.LoginServlet;
 import servlets.RegistrationServlet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -39,6 +42,11 @@ public class Main {
         context.addServlet(new ServletHolder(registrationServlet), "/reg");
 
         server.start();
+
+        Server2 server2 = new Server2();
+        server2.server2();
+
         server.join();
+        server2.stopServer();
     }
 }

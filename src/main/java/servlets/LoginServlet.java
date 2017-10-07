@@ -4,6 +4,7 @@ import database.Constructor;
 import database.DbManager;
 import templater.PageGenerator;
 
+import javax.security.auth.login.Configuration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +54,7 @@ public class LoginServlet extends HttpServlet {
         login = request.getParameter("name");
         password = request.getParameter("password");
 
-        /***Подключение к БД***/
-        try {
+        /*try {
             connection = db.getConnection();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -61,13 +62,23 @@ public class LoginServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        /***Считывание таблицы***/
         List<Constructor> list = null;
         try {
             list = db.readTable();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        List<Constructor> list = new ArrayList<>();
+
+        String log = new String("1");
+        String pas = new String("111");
+
+        Constructor constructor = new Constructor();
+        constructor.setName(log);
+        constructor.setPass(pas);
+
+        list.add(constructor);
 
         boolean a = false;  //Переменная для проверки
 
@@ -75,7 +86,7 @@ public class LoginServlet extends HttpServlet {
             String dbNames = list.get(i).getName().toString();
             String dbPasswords = list.get(i).getPass().toString();
 
-            if (login.equals(dbNames) && password.equals(dbPasswords)){
+            if (login.equals(log) && password.equals(pas)){
                 a = true;
             }
         }

@@ -16,7 +16,7 @@ public class DbManager {
     public static Connection getConnection() throws ClassNotFoundException, SQLException{
 
         Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/location", "root", "root");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/GameData", "root", "root");
         System.out.println("База Подключена!");
         return connection;
     }
@@ -30,7 +30,7 @@ public class DbManager {
         String password;
 
         Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM `table`");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM `users`");
 
         while (rs.next()) {  //Должно происходить строго в цикле
 
@@ -47,4 +47,7 @@ public class DbManager {
         }
         return usersCollection;
     }
+
+
+
 }

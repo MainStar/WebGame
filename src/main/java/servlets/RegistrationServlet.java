@@ -53,7 +53,7 @@ public class RegistrationServlet extends HttpServlet {
         /***Считываем введенные данные***/
         login = request.getParameter("username");
         password = request.getParameter("password");
-        passwordRepeat = request.getParameter("passwordRepeat");
+        passwordRepeat = request.getParameter("reepeat");
 
         /***Подключение к БД***/
         try {
@@ -67,7 +67,7 @@ public class RegistrationServlet extends HttpServlet {
         /***Заполнение таблицы***/
         if (password.equals(passwordRepeat)) {
             try {
-                prepSt = connection.prepareStatement("INSERT INTO `table` (Name, Pass) VALUES (?, ?)");
+                prepSt = connection.prepareStatement("INSERT INTO users (id, Name, Pass) VALUES (?, ?, ?)");
                 prepSt.setString(1, login);
                 prepSt.setString(2, password);
                 prepSt.executeUpdate();

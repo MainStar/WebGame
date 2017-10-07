@@ -2,32 +2,40 @@ package database;
 
 public class Constructor {
 
+    int id;
     String name;
     String pass;
 
     public Constructor(){
     }
 
-    public Constructor(String name, String pass) {
+    public Constructor(int id, String name, String pass) {
+        this.id = id;
         this.name = name;
         this.pass = pass;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return name;
     }
 
     public String getPass() {
         return pass;
     }
 
-    public String setPass(String pass) {
+    public void setPass(String pass) {
         this.pass = pass;
-        return pass;
     }
 }
