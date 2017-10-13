@@ -13,24 +13,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        /*Configuration cfg = new Configuration();
-        cfg.setClassForTemplateLoading(LoginServlet.class, "/");
-
-        try {
-            cfg.setDirectoryForTemplateLoading(new File("C:/Users/Admin/Desktop/WebServer/src/main/java/main"));
-            Template helloTemplate = cfg.getTemplate("hello.html");
-            StringWriter writer = new StringWriter();
-            Map<String, Object> helloMap = new HashMap();
-            helloMap.put("name", "Yeeeahhhh!");
-
-            helloTemplate.process(helloMap, writer);
-
-            System.out.println(writer);
-
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }*/
-
         LoginServlet loginServlet = new LoginServlet();
         RegistrationServlet registrationServlet = new RegistrationServlet();
 
@@ -47,6 +29,5 @@ public class Main {
         server2.server2();
 
         server.join();
-        server2.stopServer();
     }
 }
