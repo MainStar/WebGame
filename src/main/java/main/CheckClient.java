@@ -36,7 +36,7 @@ public class CheckClient {
             buffer.clear();
             //Thread.sleep(2000);
 
-            System.out.println("Сейчас что то приймим");
+            System.out.println("Сейчас что то примем");
             channel.read(buffer);
             byte[] bytes1 = buffer.array();
             String fromServ = new String(bytes1);

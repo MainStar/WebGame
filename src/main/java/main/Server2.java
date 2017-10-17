@@ -21,76 +21,6 @@ public class Server2 extends Thread {
 
     public void server2() throws IOException, InterruptedException {
 
-
-//        // Selector: multiplexor of SelectableChannel objects
-//        Selector selector = Selector.open(); // selector is open here
-//
-//        // ServerSocketChannel: selectable channel for stream-oriented listening sockets
-//        ServerSocketChannel crunchifySocket = ServerSocketChannel.open();
-//        InetSocketAddress crunchifyAddr = new InetSocketAddress("localhost", 10523);
-//
-//        // Binds the channel's socket to a local address and configures the socket to listen for connections
-//        crunchifySocket.bind(crunchifyAddr);
-//
-//        // Adjusts this channel's blocking mode.
-//        crunchifySocket.configureBlocking(false);
-//
-//        int ops = crunchifySocket.validOps();
-//        SelectionKey selectKy = crunchifySocket.register(selector, ops, null);
-//
-//        // Infinite loop..
-//        // Keep server running
-//        while (true) {
-//
-//            log("i'm a server and i'm waiting for new connection and buffer select...");
-//            // Selects a set of keys whose corresponding channels are ready for I/O operations
-//            selector.select();
-//
-//            // token representing the registration of a SelectableChannel with a Selector
-//            Set<SelectionKey> crunchifyKeys = selector.selectedKeys();
-//            Iterator<SelectionKey> crunchifyIterator = crunchifyKeys.iterator();
-//
-//            while (crunchifyIterator.hasNext()) {
-//                SelectionKey myKey = crunchifyIterator.next();
-//
-//                // Tests whether this key's channel is ready to accept a new socket connection
-//                if (myKey.isAcceptable()) {
-//                    SocketChannel crunchifyClient = crunchifySocket.accept();
-//
-//                    // Adjusts this channel's blocking mode to false
-//                    crunchifyClient.configureBlocking(false);
-//
-//                    // Operation-set bit for read operations
-//                    crunchifyClient.register(selector, SelectionKey.OP_READ);
-//                    log("Connection Accepted: " + crunchifyClient.getLocalAddress() + "\n");
-//
-//                    // Tests whether this key's channel is ready for reading
-//                } else if (myKey.isReadable()) {
-//
-//                    SocketChannel crunchifyClient = (SocketChannel) myKey.channel();
-//                    ByteBuffer crunchifyBuffer = ByteBuffer.allocate(256);
-//                    crunchifyClient.read(crunchifyBuffer);
-//                    String result = new String(crunchifyBuffer.array()).trim();
-//
-//                    log("Message received: " + result);
-//
-//                    if (result.equals("Crunchify")) {
-//                        crunchifyClient.close();
-//                        log("\nIt's time to close connection as we got last company name 'Crunchify'");
-//                        log("\nServer will keep running. Try running client again to establish new connection");
-//                    }
-//                }
-//                crunchifyIterator.remove();
-//            }
-//
-//        }
-//    }
-
-//    private static void log(String str) {
-//        System.out.println(str);
-//    }
-
-
         System.out.println("Client Server Started!");
 
         /** Открываем серверный канал */
@@ -104,15 +34,6 @@ public class Server2 extends Thread {
         serverChenel.socket().bind(inetAddress);
         /** Регистрация в селекторе */
         serverChenel.register(selector, SelectionKey.OP_ACCEPT);
-
-//        String name = "welcome 1";
-//        byte[] bName = name.getBytes();
-//        String name2 = new String(bName);
-//        ByteBuffer buffer = ByteBuffer.wrap(bName);
-//        System.out.println(name2);
-//        byte[] array = buffer.array();
-//        String array2 = new String(array);
-//        System.out.println("That is converted second byte array: " + array2);
 
         /**
          * ServerSocketChanel:
@@ -138,13 +59,12 @@ public class Server2 extends Thread {
                 if (key.isAcceptable()){
                     handleAccept(key);
                 }else if (key.isReadable()) {
-                            handleRead(key);
-                       }
-                System.out.println("Cейчас мы должны отправлять!");
-                      if (key.isWritable()){
-                        System.out.println("aslkjgbaklgjbakfjngafn");
-                        handleWrite(key);
-                      }
+                          handleRead(key);
+                }else if (key.isWritable()){
+                          System.out.println("aslkjgbaklgjbakfjngafn");
+                          handleWrite(key);
+                }
+
                 iterator.remove();
             }
         }
@@ -165,9 +85,10 @@ public class Server2 extends Thread {
         SocketChannel channel = (SocketChannel) key.channel();
         channel.read(buffer);
         byte[] bytes = buffer.array();
-        buffer.clear();
+//        buffer.clear();
         String name = new String(bytes);
         System.out.println(name);
+        channel.register(key.selector(), SelectionKey.OP_WRITE);
 //        channel.close();
     }
 
@@ -177,13 +98,17 @@ public class Server2 extends Thread {
         buffer.clear();
         String welcome = "Welcome to Server";
         byte[] bytes = welcome.getBytes();
-        buffer.put(Byte.parseByte(welcome));
-        channel.write(ByteBuffer.wrap(bytes));
+        buffer.put(bytes);
+        channel.write(buffer);
         System.out.println(bytes + " bytes written");
+        channel.register(key.selector(), SelectionKey.OP_READ);
 
     }
 
     public void handleConnect(SelectionKey key){
+
+        SocketChannel channel = (SocketChannel) key.channel();
+
 
     }
 }
