@@ -7,7 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class Server2 extends Thread {
@@ -18,6 +20,8 @@ public class Server2 extends Thread {
     private Socket socket;
     private boolean checkSockekt = true;
     private ByteBuffer buffer = ByteBuffer.allocate(8290);
+    private Set<SelectionKey> listSelector;
+    Iterator<SelectionKey> iterator;
 
     public void server2() throws IOException, InterruptedException {
 
@@ -46,12 +50,10 @@ public class Server2 extends Thread {
          *
          * */
 
-        Iterator<SelectionKey> iterator;
-
         while (checkSockekt == true){
             selector.select(); //Здеcь сервер начинает ждать подключения
 
-            Set<SelectionKey> listSelector = selector.selectedKeys();
+            listSelector = selector.selectedKeys();
             iterator = listSelector.iterator();
             while (iterator.hasNext()){
                 SelectionKey key = iterator.next();
@@ -61,12 +63,27 @@ public class Server2 extends Thread {
                 }else if (key.isReadable()) {
                           handleRead(key);
                 }else if (key.isWritable()){
-                          System.out.println("aslkjgbaklgjbakfjngafn");
                           handleWrite(key);
+                }
+
+                if (listSelector.size() == 2){
+
+                    List<SelectionKey> list = new ArrayList<>();
+
+                    for (SelectionKey el : listSelector){
+                        list.add(el);
+                    }
+
+                    FightClass fightClass = new FightClass(list.get(0), list.get(1));
+                    fightClass.fightClass();
+
+                    listSelector.clear();
+
                 }
 
                 iterator.remove();
             }
+
         }
     }
 
@@ -85,15 +102,13 @@ public class Server2 extends Thread {
         SocketChannel channel = (SocketChannel) key.channel();
         channel.read(buffer);
         byte[] bytes = buffer.array();
-//        buffer.clear();
+        buffer.clear();
         String name = new String(bytes);
         System.out.println(name);
         channel.register(key.selector(), SelectionKey.OP_WRITE);
-//        channel.close();
     }
 
     public void handleWrite(SelectionKey key) throws IOException {
-        System.out.println("Сейчас что то отправим!");
         SocketChannel channel = (SocketChannel) key.channel();
         buffer.clear();
         String welcome = "Welcome to Server";
@@ -101,14 +116,7 @@ public class Server2 extends Thread {
         buffer.put(bytes);
         channel.write(buffer);
         System.out.println(bytes + " bytes written");
-        channel.register(key.selector(), SelectionKey.OP_READ);
-
-    }
-
-    public void handleConnect(SelectionKey key){
-
-        SocketChannel channel = (SocketChannel) key.channel();
-
+        channel.close();
 
     }
 }

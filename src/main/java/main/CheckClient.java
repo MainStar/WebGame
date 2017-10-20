@@ -34,16 +34,18 @@ public class CheckClient {
             System.out.println(cs);
 
             buffer.clear();
-            //Thread.sleep(2000);
+            Thread.sleep(2000);
 
             System.out.println("Сейчас что то примем");
             channel.read(buffer);
             byte[] bytes1 = buffer.array();
             String fromServ = new String(bytes1);
             System.out.println(fromServ);
+
+            channel.close();
         }
 
-        channel.close();
+        //channel.close();
         System.out.println("Connect is closed!");
     }
 }
